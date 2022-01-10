@@ -72,7 +72,7 @@
                                                     <fontDescription key="titleFontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                                 </buttonConfiguration>
                                                 <connections>
-                                                    <action selector="onClickedLogin:" destination="Tgp-N7-2SV" eventType="touchUpInside" id="n2k-3h-L4H"/>
+                                                    <action selector="onClickLogin:" destination="Tgp-N7-2SV" eventType="touchUpInside" id="h7K-mc-AIk"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -111,6 +111,7 @@
                         <outlet property="mainImage" destination="n4l-WS-Tco" id="ngo-rS-8zE"/>
                         <outlet property="txtPassword" destination="6H1-3s-eyo" id="MDy-g3-oMu"/>
                         <outlet property="txtUsername" destination="yGl-PP-T9w" id="7X3-0K-03V"/>
+                        <segue destination="Ypq-v3-rc0" kind="presentation" modalPresentationStyle="overFullScreen" id="PZY-6Y-QXZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ztU-Jy-8VT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -342,6 +343,7 @@
                 <navigationController storyboardIdentifier="goToNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Ypq-v3-rc0" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="250-oW-4im"/>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="pi8-1T-fmW"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WzD-U8-VXc">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

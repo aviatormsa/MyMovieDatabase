@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import IQKeyboardManagerSwift
 
 
 class LoginViewController: UIViewController {
@@ -18,38 +19,63 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var mainImage: UIImageView!
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(addNotificationDetail), name: .notificationMovie, object: nil)
+    }
+ 
+    @IBAction func onClickLogin(_ sender: Any) {
         
+           
+        AF.request("https://api.themoviedb.org/3/authentication/token/new?api_key=0bb1276cb29f9859fafb3556afb048ce").responseDecodable { (response:AFDataResponse<TokenResponse>) in
+            switch response.result{
+                case .success(let movieResponse):
+                    BaseData.shared.token = movieResponse.requestToken
+                self.sendRequest()
+                case .failure(let error):
+                    print(error)
+                break
+            }
+        }
+
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(addNotificationDetail), name: .notificationMovie, object: nil)
+            
+     
+            
+            var username = txtUsername.text ?? ""
+            var password = txtPassword.text ?? ""
+            
+         
+    }
+    
+    
+    func sendRequest(){
+
         let headers: HTTPHeaders = [
-            "Authorization": "Bearer 5eccd8d25724777ab0e1e55a2e9618310ffc61f4", "Accept": "application/json"
+            "Accept": "application/json"
         ]
         
-        let login = AuthRequestBody.init(username: "MSA", password: "123")
+
         
-        AF.request("https://api.themoviedb.org/3/authentication/token/new?api_key=0bb1276cb29f9859fafb3556afb048ce", method: .post, parameters: login, encoder: .json, headers: headers).response {
-            response in
-            debugPrint(response)
+        var login = AuthRequestBody.init(username: txtUsername.text, password: txtPassword.text, request_token: (BaseData.shared.token ?? ""))
+
+        
+        AF.request("https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=0bb1276cb29f9859fafb3556afb048ce", method: .post, parameters: login, encoder: .json, headers: headers).responseDecodable { (response:AFDataResponse<TokenResponse>) in
+            switch response.result{
+                case .success(let response):
+                if(response.success ?? false){
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "goToNavigationController") as! UINavigationController;         vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true, completion: nil)
+                }
+                case .failure(let error):
+                    print(error)
+                break
+            }
         }
         
     }
-    
-    @IBAction func onClickedLogin(_ sender: Any) {
-        
-        var username = txtUsername.text ?? ""
-        var password = txtPassword.text ?? ""
-        
-        if username == "MSA" && password == "123" {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "goToNavigationController") as! UINavigationController;         vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-        }else {
-            print("Your username or password is invalid. Please try again.")
-        }
-        
-}
-
     @objc func addNotificationDetail () {
         print("Notification received")
     }

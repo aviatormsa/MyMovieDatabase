@@ -8,5 +8,5 @@
 import Foundation
 
 struct AuthRequestBody: Codable {
-    let username, password : String?
+    let username, password, request_token : String?
 }
